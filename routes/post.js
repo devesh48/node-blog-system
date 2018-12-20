@@ -3,6 +3,16 @@ var db = require('monk')('localhost/nodeblog');
 var express = require('express');
 var router = express.Router();
 
+router.get('/show/:id',function(req,res,next){
+	var db = req.db;
+	var posts = db.get('posts');
+	posts.findById(req.params.id, function(err,post){
+			res.render ('show',{
+			"post" : post
+		});
+	});
+});
+
 /* GET users listing. */
 router.get('/add', function(req, res, next) {
 	var categories = db.get('categories');
@@ -22,7 +32,7 @@ router.post('/add', function(req, res, next) {
   var author = req.body.author;
   var date = new Date();
   
- /* if (req.files.mainimage){
+/* if (req.files.mainimage){
 		var mainImageOriginalName = req.files.mainimage.originalname;
 		var mainImageName = req.files.mainimage.name;
 		var mainImageMime = req.files.mainimage.mimetype;
