@@ -12,10 +12,17 @@ var flash = require('connect-flash');
 
 var indexRouter = require('./routes/index');
 var postRouter = require('./routes/post');
+var categories = require('./routes/category');
 
 var app = express();
 
 app.locals.moment = require('moment');  //to define global variable we use app.locals
+
+app.locals.truncateText = function (text,length){
+	var truncatedText = text.substring(0,length);
+	return truncatedText;
+	
+}
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -71,6 +78,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/post', postRouter);
+app.use('/categories',categories);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
